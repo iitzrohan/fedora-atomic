@@ -70,12 +70,12 @@
             "kinoite": [
                 "fcitx5-qt",
                 "fcitx5-gtk",
-               	"fcitx5-chinese-addons",
-				"fcitx5-hangul",
-				"fcitx5-libthai",
-				"fcitx5-mozc",
-				"fcitx5-sayura",
-				"fcitx5-unikey",
+                "fcitx5-chinese-addons",
+                "fcitx5-hangul",
+                "fcitx5-libthai",
+                "fcitx5-mozc",
+                "fcitx5-sayura",
+                "fcitx5-unikey",
                 "fcitx5-configtool",
                 "kcm-fcitx5",
                 "icoutils",
@@ -84,27 +84,26 @@
                 "kio-admin",
                 "ksshaskpass",
                 "qt6-qtimageformats"
-            ],
-            "sway-atomic": [
-                "clipman",
-                "gvfs-mtp",
-                "thunar-volman",
-                "tumbler"
             ]
         },
         "exclude": {
-            "all": ["google-noto-sans-cjk-vf-fonts", "default-fonts-cjk-sans"],
+            "all": [
+                "google-noto-sans-cjk-vf-fonts",
+                "default-fonts-cjk-sans"
+            ],
             "silverblue": [
                 "totem-video-thumbnailer",
                 "gnome-software-rpm-ostree"
             ],
-            "kinoite": ["ffmpegthumbnailer", "plasma-discover-rpm-ostree"]
+            "kinoite": [
+                "ffmpegthumbnailer",
+                "plasma-discover-rpm-ostree"
+            ]
         }
     },
     "41": {
         "include": {
-            "all": [],
-            "sericea": ["clipman", "gvfs-mtp", "thunar-volman", "tumbler"]
+            "all": []
         },
         "exclude": {
             "all": []
@@ -112,8 +111,7 @@
     },
     "42": {
         "include": {
-            "all": [],
-            "sway-atomic": []
+            "all": []
         },
         "exclude": {
             "all": []
