@@ -27,7 +27,6 @@ dnf5 -y copr enable kylegospo/oversteer
 dnf5 -y install \
     ublue-os-just \
     ublue-os-luks \
-    ublue-os-signing \
     ublue-os-udev-rules \
     ublue-os-update-services \
     /tmp/akmods-rpms/*.rpm \

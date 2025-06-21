@@ -1,0 +1,3 @@
+docker:
+  ghcr.io/iitzrohan:
+    use-sigstore-attachments: true
