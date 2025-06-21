@@ -13,6 +13,8 @@ FROM scratch AS ctx
 COPY /sys_files /sys_files
 COPY /build_files /
 COPY packages.json /
+COPY /scripts /scripts
+COPY /certs /certs
 
 FROM ${IMAGE_REGISTRY}/akmods:main-${FEDORA_MAJOR_VERSION}${AKMODS_DIGEST:+@${AKMODS_DIGEST}} AS akmods
 
@@ -38,6 +40,7 @@ RUN --mount=type=bind,from=ctx,src=/,dst=/ctx \
     if [ "${BUILD_NVIDIA}" == "Y" ]; then \
         AKMODNV_PATH=/tmp/akmods-nv-rpms /ctx/nvidia-install.sh \
     ; fi && \
+    /ctx/sign-kernel-modules.sh && \
     /ctx/initramfs.sh && \
     /ctx/post-install.sh
 

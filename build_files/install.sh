@@ -4,6 +4,8 @@ set -ouex pipefail
 
 # Copy System Files onto root
 rsync -rvK /ctx/sys_files/ /
+rsync -rvK /ctx/certs/ /tmp/certs/
+rsync -rvK /ctx/scripts/ /tmp/scripts/
 
 # make root's home
 mkdir -p /var/roothome
@@ -58,6 +60,7 @@ KERNEL_RPMS=(
     "/tmp/kernel-rpms/kernel-modules-${KERNEL_VERSION}.rpm"
     "/tmp/kernel-rpms/kernel-modules-core-${KERNEL_VERSION}.rpm"
     "/tmp/kernel-rpms/kernel-modules-extra-${KERNEL_VERSION}.rpm"
+    "/tmp/kernel-rpms/kernel-devel-${KERNEL_VERSION}.rpm"
     "/tmp/kernel-rpms/kernel-uki-virt-${KERNEL_VERSION}.rpm"
 )
 dnf5 -y install "${KERNEL_RPMS[@]}"

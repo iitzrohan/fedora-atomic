@@ -34,6 +34,14 @@ jobs:
         # yamllint disable-line rule:line-length rule:comments
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
+      - name: Retrieve Signing Key
+        shell: bash
+        run: |
+          echo "${{ secrets.PRIVATE_KEY_20250405 }}" > certs/private_key.priv
+          wc -c certs/private_key.priv
+          cat certs/private_key.priv <(echo) certs/public_key.crt >> certs/signing_key.pem
+          wc -c certs/signing_key.pem
+
       - name: Setup Just
         # yamllint disable-line rule:line-length rule:comments
         uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff # v3
