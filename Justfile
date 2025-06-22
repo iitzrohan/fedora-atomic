@@ -36,8 +36,11 @@ image-file := justfile_dir() / "image-versions.yaml"
 images := '(
     ["base"]="base-atomic"
     ["silverblue"]="silverblue"
+    ["silverblue-dx"]="silverblue"
     ["kinoite"]="kinoite"
-    ["cosmic-atomic"]="cosmic-atomic"
+    ["kinoite-dx"]="kinoite"
+    ["cosmic"]="cosmic-atomic"
+    ["cosmic-dx"]="cosmic-atomic"
 )'
 
 # Fedora Versions
@@ -242,20 +245,20 @@ gen-tags $image_name="" $fedora_version="" $variant="":
     # Generate Timestamp with incrementing version point
     TIMESTAMP="$(date +%Y%m%d)"
     LIST_TAGS="$(mktemp)"
-    while [[ ! -s "$LIST_TAGS" ]]; do
-        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
-    done
-    if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
-        POINT="1"
-        while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP.$POINT\"))")
-        do
-            (( POINT++ ))
-        done
-    fi
+    # while [[ ! -s "$LIST_TAGS" ]]; do
+    #     skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
+    # done
+    # if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
+    #     POINT="1"
+    #     while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP.$POINT\"))")
+    #     do
+    #         (( POINT++ ))
+    #     done
+    # fi
 
-    if [[ -n "${POINT:-}" ]]; then
-        TIMESTAMP="$TIMESTAMP.$POINT"
-    fi
+    # if [[ -n "${POINT:-}" ]]; then
+    #     TIMESTAMP="$TIMESTAMP.$POINT"
+    # fi
 
     # Add a sha tag for tracking builds during a pull request
     SHA_SHORT="$(git rev-parse --short HEAD)"
@@ -300,12 +303,8 @@ image-name-check $image_name $fedora_version $variant:
     fedora_version="$({{ just }} fedora-version-check $fedora_version || exit 1)"
     variant="$({{ just }} fedora-variant-check $variant || exit 1)"
 
-    # TODO: Remove this block when 42 becomes GTS
-    if [[ "$fedora_version" -eq "40" ]]; then
-        echo "($image_name-$variant $image_name $fedora_version)"
-    elif [[ "$image_name" =~ atomic && "$fedora_version" -le "41" ]]; then
-        echo '{{ style('error') }}Invalid Image Name{{ NORMAL }}: {{ style('command') }}`-atomic` names only used on >= F42{{ NORMAL }}' >&2
-        exit 1
+    if [[ "$variant" == "main" ]]; then
+        echo "($image_name $source_image_name $fedora_version)"
     else
         echo "($image_name-$variant $source_image_name $fedora_version)"
     fi

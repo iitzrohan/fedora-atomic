@@ -22,9 +22,12 @@ jobs:
       matrix:
         image_name:
           - base
-          - kinoite
           - silverblue
-          - cosmic-atomic
+          - silverblue-dx
+          - kinoite
+          - kinoite-dx
+          - cosmic
+          - cosmic-dx
         image_variant:
           - main
           - nvidia
