@@ -15,9 +15,10 @@ default_variant := "main"
 
 # Reused Values
 
-org := "ublue-os"
-repo := "main"
+org := "iitzrohan"
+repo := "fedora-atomic"
 IMAGE_REGISTRY := "ghcr.io" / org
+AKMODS_REGISTRY := "ghcr.io" / "ublue-os"
 
 # Upstream
 
@@ -189,7 +190,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 
     # Labels
     VERSION="$fedora_version.$TIMESTAMP"
-    KERNEL_VERSION="$(skopeo inspect docker://{{ IMAGE_REGISTRY }}/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
+    KERNEL_VERSION="$(skopeo inspect docker://{{ AKMODS_REGISTRY }}/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
         "--label" "org.opencontainers.image.title=${image_name}"
         "--label" "org.opencontainers.image.version=${VERSION}"
@@ -210,7 +211,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
         "--build-arg" "SOURCE_ORG={{ source_org }}"
         "--build-arg" "SOURCE_IMAGE=${source_image_name}"
         "--build-arg" "FEDORA_MAJOR_VERSION=$fedora_version"
-        "--build-arg" "IMAGE_REGISTRY={{ IMAGE_REGISTRY }}"
+        "--build-arg" "AKMODS_REGISTRY={{ AKMODS_REGISTRY }}"
         "--build-arg" "KERNEL_VERSION=$KERNEL_VERSION"
         "--build-arg" "BASE_IMAGE_DIGEST=$BASE_IMAGE_DIGEST"
         "--build-arg" "AKMODS_DIGEST=$AKMODS_DIGEST"
@@ -219,8 +220,8 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     )
 
     # Pull Images with retry
-    pull-retry "{{ IMAGE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
-    pull-retry "{{ IMAGE_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
+    pull-retry "{{ AKMODS_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
+    pull-retry "{{ AKMODS_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
     pull-retry "{{ source_registry }}/$source_image_name:$fedora_version@$BASE_IMAGE_DIGEST"
 
     # Build Image
@@ -228,8 +229,8 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 
     # CI Cleanup
     if [[ -n "${CI:-}" ]]; then
-        {{ PODMAN }} rmi -f "{{ IMAGE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
-        {{ PODMAN }} rmi -f "{{ IMAGE_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
+        {{ PODMAN }} rmi -f "{{ AKMODS_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
+        {{ PODMAN }} rmi -f "{{ AKMODS_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
         {{ PODMAN }} rmi -f "{{ source_registry }}/$source_image_name:$fedora_version@$BASE_IMAGE_DIGEST"
     fi
 
@@ -245,20 +246,20 @@ gen-tags $image_name="" $fedora_version="" $variant="":
     # Generate Timestamp with incrementing version point
     TIMESTAMP="$(date +%Y%m%d)"
     LIST_TAGS="$(mktemp)"
-    # while [[ ! -s "$LIST_TAGS" ]]; do
-    #     skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
-    # done
-    # if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
-    #     POINT="1"
-    #     while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP.$POINT\"))")
-    #     do
-    #         (( POINT++ ))
-    #     done
-    # fi
+    while [[ ! -s "$LIST_TAGS" ]]; do
+        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
+    done
+    if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
+        POINT="1"
+        while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP.$POINT\"))")
+        do
+            (( POINT++ ))
+        done
+    fi
 
-    # if [[ -n "${POINT:-}" ]]; then
-    #     TIMESTAMP="$TIMESTAMP.$POINT"
-    # fi
+    if [[ -n "${POINT:-}" ]]; then
+        TIMESTAMP="$TIMESTAMP.$POINT"
+    fi
 
     # Add a sha tag for tracking builds during a pull request
     SHA_SHORT="$(git rev-parse --short HEAD)"
@@ -414,7 +415,7 @@ verify-container $container="" $registry="" $key="": install-cosign
 
     # ublue-os Public Key for Container Verification default
     if [[ -z "${registry:-}" && -z "${key:-}"  ]]; then
-        registry={{ IMAGE_REGISTRY }}
+        registry={{ AKMODS_REGISTRY }}
         key="https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub"
     fi
 
@@ -497,7 +498,7 @@ cosign-sign $image_name $fedora_version $variant $destination="": install-cosign
     {{ get-names }}
     {{ build-missing }}
 
-    : "${destination:={{ IMAGE_REGISTRY }}}"
+    : "${destination:={{ AKMODS_REGISTRY }}}"
     digest="$(skopeo inspect docker://$destination/$image_name:$fedora_version --format '{{{{ .Digest }}')"
     cosign sign -y --key env://COSIGN_PRIVATE_KEY "$destination/$image_name@$digest"
 
@@ -556,7 +557,7 @@ sbom-attest $fedora_version $image_name $variant $destination="" $sbom="" $diges
     {{ get-names }}
     {{ build-missing }}
 
-    : "${destination:={{ IMAGE_REGISTRY }}}"
+    : "${destination:={{ AKMODS_REGISTRY }}}"
     : "${sbom:=$({{ just }} gen-sbom $fedora_version $image_name)}"
     : "${digest:=$({{ PODMAN }} inspect localhost/$image_name:$fedora_version --format '{{ ' {{ .Digest }} ' }}')}"
 
