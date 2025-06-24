@@ -16,6 +16,11 @@ dnf5 versionlock clear
 # Enable Update Timers
 systemctl enable rpm-ostreed-automatic.timer
 systemctl enable flatpak-system-update.timer
+systemctl enable tailscaled.service
+if rpm -q docker-ce >/dev/null; then
+    systemctl enable docker.socket
+fi
+systemctl enable podman.socket
 systemctl --global enable flatpak-user-update.timer
 
 # Configure staged updates for rpm-ostree
@@ -28,6 +33,19 @@ ln -s "/usr/share/fonts/google-noto-sans-cjk-fonts" "/usr/share/fonts/noto-cjk"
 dnf5 -y copr remove ublue-os/staging
 dnf5 -y copr remove ublue-os/packages
 dnf5 -y copr remove kylegospo/oversteer
+dnf5 -y copr remove gmaglione/podman-bootc
+dnf5 -y copr remove atim/ubuntu-fonts
+dnf5 -y copr remove medzik/jetbrains
+
+
+# Remove java repository
+dnf5 config-manager setopt adoptium-temurin-java-repository.enabled=0
+dnf5 -y remove adoptium-temurin-java-repository
+
+# Disable vscode and docker-ce repos
+dnf5 config-manager setopt docker-ce-stable.enabled=0
+dnf5 config-manager setopt code.enabled=0
+dnf5 config-manager setopt tailscale-stable.enabled=0
 
 # Disable Negativo17 Fedora Multimedia
 # This needs to be a whole organiztion change

@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       image_version:
-        description: "The Version: gts, latest, beta... Justfile holds value"
+        description: "The Version: latest, beta... Justfile holds value"
         required: true
         type: string
       image_name:
@@ -33,6 +33,11 @@ jobs:
       - name: Checkout
         # yamllint disable-line rule:line-length rule:comments
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@cc0becac701cf642c8f0a6613bbdaf5dc36b259e # v9
+        with:
+          remove-codeql: true
 
       - name: Retrieve Signing Key
         shell: bash

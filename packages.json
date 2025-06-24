@@ -21,6 +21,7 @@
                 "google-noto-sans-sundanese-fonts",
                 "heif-pixbuf-loader",
                 "htop",
+                "helix",
                 "intel-vaapi-driver",
                 "just",
                 "libavcodec",
@@ -50,6 +51,7 @@
                 "solaar-udev",
                 "squashfs-tools",
                 "symlinks",
+                "tailscale",
                 "tcpdump",
                 "tmux",
                 "traceroute",
@@ -84,29 +86,70 @@
                 "kio-admin",
                 "ksshaskpass",
                 "qt6-qtimageformats"
+            ],
+            "dx": [
+                "android-tools",
+                "bcc",
+                "bpftop",
+                "bpftrace",
+                "cascadia-code-fonts",
+                "code",
+                "containerd.io",
+                "docker-buildx-plugin",
+                "docker-ce",
+                "docker-ce-cli",
+                "docker-compose-plugin",
+                "golang",
+                "helm",
+                "intellij-idea-community",
+                "nodejs",
+                "p7zip",
+                "p7zip-plugins",
+                "pnpm",
+                "podman-bootc",
+                "podman-compose",
+                "podman-machine",
+                "podman-tui",
+                "podmansh",
+                "rustup",
+                "temurin-21-jdk",
+                "tiptop",
+                "trace-cmd",
+                "ubuntu-family-fonts",
+                "udica",
+                "ydotool"
             ]
         },
         "exclude": {
             "all": [
+                "default-fonts-cjk-sans",
+                "fedora-bookmarks",
+                "fedora-chromium-config",
+                "fedora-chromium-config-gnome",
+                "firefox",
+                "firefox-langpacks",
                 "google-noto-sans-cjk-vf-fonts",
-                "default-fonts-cjk-sans"
+                "podman-docker"
             ],
             "silverblue": [
+                "gnome-classic-session",
+                "gnome-extensions-app",
+                "gnome-shell-extension-apps-menu",
+                "gnome-shell-extension-background-logo",
+                "gnome-shell-extension-common",
+                "gnome-shell-extension-launch-new-instance",
+                "gnome-shell-extension-places-menu",
+                "gnome-shell-extension-window-list",
+                "gnome-software-rpm-ostree",
+                "gnome-system-monitor",
+                "gnome-terminal-nautilus",
                 "totem-video-thumbnailer",
-                "gnome-software-rpm-ostree"
+                "yelp"
             ],
             "kinoite": [
                 "ffmpegthumbnailer",
                 "plasma-discover-rpm-ostree"
             ]
-        }
-    },
-    "41": {
-        "include": {
-            "all": []
-        },
-        "exclude": {
-            "all": []
         }
     },
     "42": {
