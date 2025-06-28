@@ -96,7 +96,7 @@ dnf5 distro-sync -y --repo='fedora-multimedia' "${OVERRIDES[@]}"
 dnf5 versionlock add "${OVERRIDES[@]}"
 
 # Disable DKMS support in gnome-software
-if [[ "$IMAGE_NAME" == "silverblue" ]]; then
+if [[ "$IMAGE_NAME" =~ "silverblue" ]]; then
     dnf5 remove -y \
         gnome-software-rpm-ostree
     dnf5 swap -y \
@@ -106,7 +106,7 @@ if [[ "$IMAGE_NAME" == "silverblue" ]]; then
 fi
 
 # Prevent partial QT upgrades that may break SDDM/KWin
-if [[ "$IMAGE_NAME" == "kinoite" ]]; then
+if [[ "$IMAGE_NAME" =~ "kinoite" ]]; then
     dnf5 versionlock add "qt6-*"
 fi
 

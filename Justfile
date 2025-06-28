@@ -36,11 +36,8 @@ image-file := justfile_dir() / "image-versions.yaml"
 images := '(
     ["base"]="base-atomic"
     ["silverblue"]="silverblue"
-    ["silverblue-dx"]="silverblue"
     ["kinoite"]="kinoite"
-    ["kinoite-dx"]="kinoite"
     ["cosmic"]="cosmic-atomic"
-    ["cosmic-dx"]="cosmic-atomic"
 )'
 
 # Fedora Versions
@@ -102,7 +99,7 @@ fedora_version="${_images[2]}"
 '
 [private]
 build-missing := '
-cmd="' + just + ' build ${image_name%-*} $fedora_version $variant"
+cmd="' + just + ' build ${image_name%%-*} $fedora_version $variant"
 if ! ' + PODMAN + ' image exists "localhost/$image_name:$fedora_version"; then
     echo "' + style('warning') + 'Warning' + NORMAL +': Container Does Not Exist..." >&2
     echo "' + style('warning') + 'Will Run' + NORMAL +': ' + style('command') + '$cmd' + NORMAL +'" >&2
@@ -189,7 +186,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     LABELS=(
         "--label" "org.opencontainers.image.title=${image_name}"
         "--label" "org.opencontainers.image.version=${VERSION}"
-        "--label" "org.opencontainers.image.description=A base Universal Blue ${image_name%-*} image with batteries included"
+        "--label" "org.opencontainers.image.description=A base Universal Blue ${image_name%%-*} image with batteries included"
         "--label" "ostree.linux=${KERNEL_VERSION}"
         "--label" "io.artifacthub.package.readme-url=https://raw.githubusercontent.com/{{ org }}/{{ repo }}/main/README.md"
         "--label" "io.artifacthub.package.logo-url=https://avatars.githubusercontent.com/u/120078124?s=200&v=4"
@@ -202,7 +199,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 
     # Build Arguments
     BUILD_ARGS=(
-        "--build-arg" "IMAGE_NAME=${image_name%-*}"
+        "--build-arg" "IMAGE_NAME=${image_name}"
         "--build-arg" "SOURCE_ORG={{ source_org }}"
         "--build-arg" "SOURCE_IMAGE=${source_image_name}"
         "--build-arg" "FEDORA_MAJOR_VERSION=$fedora_version"
@@ -283,11 +280,11 @@ image-name-check $image_name $fedora_version $variant:
     set ${SET_X:+-x} -eou pipefail
     declare -A images={{ images }}
 
-    if [[ "$image_name" =~ -main$|-nvidia$ ]]; then
+    if [[ "$image_name" =~ $variant$ ]]; then
         image_name="${image_name%-*}"
     fi
 
-    source_image_name="${images[$image_name]:-}"
+    source_image_name="${images[${image_name%%-*}]:-}"
     if [[ -z "$source_image_name" ]]; then
         echo '{{ style('error') }}Invalid Image Name{{ NORMAL }}' >&2
         exit 1

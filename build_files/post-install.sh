@@ -3,7 +3,7 @@
 set -ouex pipefail
 
 # Enable getty on tty1 for image with no Display Manager
-if [[ "$IMAGE_NAME" == "base" ]]; then
+if [[ "$IMAGE_NAME" =~ "base" ]]; then
     systemctl enable getty@tty1
 fi
 
