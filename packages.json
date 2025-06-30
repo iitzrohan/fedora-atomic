@@ -6,6 +6,7 @@
                 "android-udev-rules",
                 "apr",
                 "apr-util",
+                "bazaar",
                 "distrobox",
                 "fdk-aac",
                 "ffmpeg",
