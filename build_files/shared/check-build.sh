@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -eoux pipefail
 
 source /etc/os-release
@@ -31,3 +33,5 @@ esac
 for package in "${IMPORTANT_PACKAGES[@]}"; do
     rpm -q "$package" >/dev/null || { echo "Missing package: $package... Exiting"; exit 1 ; }
 done
+
+echo "::endgroup::"

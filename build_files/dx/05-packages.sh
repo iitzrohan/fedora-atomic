@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -ouex pipefail
 
 # build list of all packages requested for inclusion
@@ -29,3 +31,5 @@ if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
 else
     echo "No packages to remove."
 fi
+
+echo "::endgroup::"

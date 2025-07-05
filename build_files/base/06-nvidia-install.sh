@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -ouex pipefail
 
 RELEASE="$(rpm -E %fedora)"
@@ -107,3 +109,5 @@ sed -i 's@ nvidia @ i915 amdgpu nvidia @g' /usr/lib/dracut/dracut.conf.d/99-nvid
 if [[ "${NEGATIVO17_MULT_PREV_ENABLED}" = "Y" ]]; then
     dnf5 config-manager setopt fedora-multimedia.enabled=1
 fi
+
+echo "::endgroup::"

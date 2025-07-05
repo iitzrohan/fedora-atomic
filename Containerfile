@@ -10,11 +10,7 @@ ARG AKMODS_NVIDIA_DIGEST=""
 ARG BASE_IMAGE_DIGEST=""
 
 FROM scratch AS ctx
-COPY /sys_files /sys_files
-COPY /build_files /
-COPY packages.json /
-COPY /scripts /scripts
-COPY /certs /certs
+COPY / /
 
 FROM ${AKMODS_REGISTRY}/akmods:main-${FEDORA_MAJOR_VERSION}${AKMODS_DIGEST:+@${AKMODS_DIGEST}} AS akmods
 
@@ -23,6 +19,7 @@ FROM ${AKMODS_REGISTRY}/akmods-nvidia-open:main-${FEDORA_MAJOR_VERSION}${AKMODS_
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}${BASE_IMAGE_DIGEST:+@${BASE_IMAGE_DIGEST}}
 
 ARG IMAGE_NAME="${IMAGE_NAME:-silverblue}"
+ARG SOURCE_IMAGE="${SOURCE_IMAGE:-silverblue}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-42}"
 ARG KERNEL_VERSION="${KERNEL_VERSION:-6.14.0-0.rc3.29.fc42.x86_64}"
 ARG BUILD_NVIDIA="${BUILD_NVIDIA:-N}"
@@ -36,13 +33,7 @@ RUN --mount=type=bind,from=ctx,src=/,dst=/ctx \
     --mount=type=bind,from=akmods_nvidia,src=/rpms,dst=/tmp/akmods-nv-rpms \
     rm -f /usr/bin/chsh && \
     rm -f /usr/bin/lchsh && \
-    /ctx/install.sh && \
-    if [ "${BUILD_NVIDIA}" == "Y" ]; then \
-        AKMODNV_PATH=/tmp/akmods-nv-rpms /ctx/nvidia-install.sh \
-    ; fi && \
-    /ctx/sign-kernel-modules.sh && \
-    /ctx/initramfs.sh && \
-    /ctx/post-install.sh
+    /ctx/build_files/shared/build.sh
 
 # bootc lint
 RUN ["bootc", "container", "lint"]

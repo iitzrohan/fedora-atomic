@@ -1,4 +1,7 @@
 #!/bin/bash
+
+echo "::group:: ===$(basename "$0")==="
+
 #
 # A script to install an RPM from the latest Github release for a project.
 #
@@ -54,3 +57,5 @@ RPM_URLS=($(cat ${API_JSON} |
 # WARNING: in case of multiple matches, this only installs the first matched release
 echo "execute: dnf5 -y install \"${RPM_URLS[0]}\""
 dnf5 -y install "${RPM_URLS[0]}"
+
+echo "::endgroup::"

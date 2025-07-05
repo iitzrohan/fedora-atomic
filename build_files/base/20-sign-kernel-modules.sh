@@ -1,10 +1,15 @@
 #!/usr/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -eoux pipefail
 
 KERNEL_VERSION="$(rpm -q --queryformat="%{evr}.%{arch}" kernel-core)"
+
 SIGNING_KEY="/tmp/certs/signing_key.pem"
 PUBLIC_CHAIN="/tmp/certs/public_key.crt"
+PUBKEY_PATH="/tmp/certs/public_key.der"
+PRIVKEY_PATH="/tmp/certs/private_key.priv"
 
 # Verify certificates exist before proceeding
 if [ ! -f "${SIGNING_KEY}" ] || [ ! -f "${PUBLIC_CHAIN}" ]; then
@@ -12,6 +17,23 @@ if [ ! -f "${SIGNING_KEY}" ] || [ ! -f "${PUBLIC_CHAIN}" ]; then
     ls -la /tmp/certs || echo "Directory /tmp/certs does not exist"
     exit 1
 fi
+
+# Sign kernel
+STRIP="false"
+
+if [[ "${STRIP}" == "true" ]]; then
+    EXISTING_SIGNATURES="$(sbverify --list /usr/lib/modules/$KERNEL_VERSION/vmlinuz | grep '^signature \([0-9]\+\)$' | sed 's/^signature \([0-9]\+\)$/\1/')" || true
+    if [[ -n $EXISTING_SIGNATURES ]]; then
+        for SIGNUM in $EXISTING_SIGNATURES
+        do
+            echo "Found existing signature at signum $SIGNUM, removing..."
+            sbattach --remove /usr/lib/modules/$KERNEL_VERSION/vmlinuz
+        done
+    fi
+fi
+
+sbsign --cert $PUBLIC_CHAIN --key $PRIVKEY_PATH /usr/lib/modules/$KERNEL_VERSION/vmlinuz --output /usr/lib/modules/$KERNEL_VERSION/vmlinuz
+sbverify --list /usr/lib/modules/$KERNEL_VERSION/vmlinuz
 
 # Sign kernel modules
 for module in $(find /usr/lib/modules/"${KERNEL_VERSION}"/extra/ -name "*.ko*"); do
@@ -38,3 +60,5 @@ for module in $(find /usr/lib/modules/"${KERNEL_VERSION}"/extra/ -name "*.ko*");
         rm -f "${module}.cms"
     fi
 done
+
+echo "::endgroup::"

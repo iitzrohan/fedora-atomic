@@ -6,7 +6,6 @@
                 "android-udev-rules",
                 "apr",
                 "apr-util",
-                "bazaar",
                 "distrobox",
                 "fdk-aac",
                 "ffmpeg",
@@ -48,6 +47,7 @@
                 "pipewire-libs-extra",
                 "pipewire-plugin-libcamera",
                 "powerstat",
+                "sbsigntools",
                 "smartmontools",
                 "solaar-udev",
                 "squashfs-tools",
@@ -56,6 +56,7 @@
                 "tcpdump",
                 "tmux",
                 "traceroute",
+                "uupd",
                 "vim",
                 "wireguard-tools",
                 "wl-clipboard",
@@ -66,11 +67,13 @@
             ],
             "silverblue": [
                 "adw-gtk3-theme",
+                "bazaar",
                 "gvfs-nfs",
                 "ibus-unikey",
                 "ibus-mozc"
             ],
             "kinoite": [
+                "bazaar",
                 "fcitx5-qt",
                 "fcitx5-gtk",
                 "fcitx5-chinese-addons",
@@ -87,6 +90,9 @@
                 "kio-admin",
                 "ksshaskpass",
                 "qt6-qtimageformats"
+            ],
+            "cosmic": [
+                "bazaar"
             ],
             "dx": [
                 "android-tools",
@@ -141,6 +147,7 @@
                 "gnome-shell-extension-launch-new-instance",
                 "gnome-shell-extension-places-menu",
                 "gnome-shell-extension-window-list",
+                "gnome-software",
                 "gnome-software-rpm-ostree",
                 "gnome-system-monitor",
                 "gnome-terminal-nautilus",
@@ -150,7 +157,8 @@
             "kinoite": [
                 "ffmpegthumbnailer",
                 "plasma-discover-rpm-ostree"
-            ]
+            ],
+            "cosmic": []
         }
     },
     "42": {

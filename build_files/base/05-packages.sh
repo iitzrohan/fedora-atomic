@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -ouex pipefail
 
 IMAGE_NAME=${IMAGE_NAME%%-*}
@@ -34,3 +36,5 @@ if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
 else
     echo "No packages to remove."
 fi
+
+echo "::endgroup::"
