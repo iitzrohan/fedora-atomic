@@ -10,6 +10,7 @@ systemctl enable docker.socket
 dnf5 -y copr remove gmaglione/podman-bootc
 dnf5 -y copr remove atim/ubuntu-fonts
 dnf5 -y copr remove medzik/jetbrains
+dnf5 -y copr remove che/nerd-fonts
 
 # Remove java repository
 dnf5 config-manager setopt adoptium-temurin-java-repository.enabled=0
