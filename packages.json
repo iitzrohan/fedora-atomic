@@ -20,9 +20,10 @@
                 "google-noto-sans-javanese-fonts",
                 "google-noto-sans-sundanese-fonts",
                 "heif-pixbuf-loader",
-                "htop",
                 "helix",
+                "htop",
                 "intel-vaapi-driver",
+                "jetbrains-mono-fonts-all",
                 "just",
                 "libavcodec",
                 "libcamera",
@@ -68,9 +69,14 @@
             "silverblue": [
                 "adw-gtk3-theme",
                 "bazaar",
+                "gnome-shell-extension-appindicator",
+                "gnome-shell-extension-gsconnect",
+                "gnome-shell-extension-tailscale-gnome-qs",
                 "gvfs-nfs",
                 "ibus-unikey",
-                "ibus-mozc"
+                "ibus-mozc",
+                "libgda",
+                "libgda-sqlite"
             ],
             "kinoite": [
                 "bazaar",
@@ -109,6 +115,7 @@
                 "golang",
                 "helm",
                 "intellij-idea-community",
+                "nerd-fonts",
                 "nodejs",
                 "p7zip",
                 "p7zip-plugins",

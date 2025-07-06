@@ -7,6 +7,7 @@ set -eoux pipefail
 dnf5 -y copr enable atim/ubuntu-fonts
 dnf5 -y copr enable gmaglione/podman-bootc
 dnf5 -y copr enable medzik/jetbrains
+dnf5 -y copr enable che/nerd-fonts
 dnf5 -y install adoptium-temurin-java-repository
 
 dnf5 config-manager setopt adoptium-temurin-java-repository.enabled=1

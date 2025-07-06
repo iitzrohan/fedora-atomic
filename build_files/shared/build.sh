@@ -7,8 +7,20 @@ set -ouex pipefail
 # Copy System Files onto root
 rsync -rvK /ctx/sys_files/shared/ /
 rsync -rvK /ctx/sys_files/"${SOURCE_IMAGE}"/ /
+rsync -rvK /ctx/sys_files/dx/ /
 rsync -rvK /ctx/certs/ /tmp/certs/
 rsync -rvK /ctx/scripts/ /tmp/scripts/
+
+# Apply IP Forwarding before installing Docker to prevent messing with LXC networking
+sysctl -p
+
+# Load iptable_nat module for docker-in-docker.
+# See:
+#   - https://github.com/ublue-os/bluefin/issues/2365
+#   - https://github.com/devcontainers/features/issues/1235
+mkdir -p /etc/modules-load.d && cat >>/etc/modules-load.d/ip_tables.conf <<EOF
+iptable_nat
+EOF
 
 # make root's home
 mkdir -p /var/roothome
@@ -27,6 +39,16 @@ fi
 /ctx/build_files/base/03-install-kernel-akmods.sh
 
 /ctx/build_files/base/04-override-install.sh
+
+if [[ "$IMAGE_NAME" =~ "dx" ]]; then
+    /ctx/build_files/dx/04-override-install.sh
+fi
+
+if [[ -f /ctx/build_files/"${SOURCE_IMAGE}"/04-override-install.sh ]]; then
+    /ctx/build_files/"${SOURCE_IMAGE}"/04-override-install.sh
+else
+    echo "No override install script found for ${SOURCE_IMAGE}"
+fi
 
 /ctx/build_files/base/05-packages.sh
 
@@ -50,7 +72,7 @@ fi
 
 /ctx/build_files/base/19-initramfs.sh
 
-/ctx/build_files/base/20-sign-kernel-modules.sh
+/ctx/build_files/shared/sign-kernel-modules.sh
 
 # use CoreOS' generator for emergency/rescue boot
 # see detail: https://github.com/ublue-os/main/issues/653
