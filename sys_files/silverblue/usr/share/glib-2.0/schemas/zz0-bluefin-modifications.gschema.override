@@ -52,16 +52,9 @@ sort-directories-first=true
 [org.gnome.mutter]
 check-alive-timeout=uint32 20000
 
-[org.gnome.software]
-allow-updates=false
-download-updates=false
-download-updates-notify=false
-
-[com.github.stunkymonkey.nautilus-open-any-terminal]
-terminal='ptyxis'
-keybindings=''
-new-tab=false
-flatpak='off'
+[org.gnome.shell.extensions.pano]
+send-notification-on-copy=false
+play-audio-on-copy=false
 
 #-------------- REMAINING SCHEMAS IN THIS SETTING SECTION ARE LOCATED IN DCONF --------------#
 # Settings bellow are supported with gschema override, but other settings, which are relocatable schemas, are not. Edit dconfs if you need to modify relocatable schemas.

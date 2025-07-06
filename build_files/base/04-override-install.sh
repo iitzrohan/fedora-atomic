@@ -42,7 +42,19 @@ curl --retry 3 -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/re
 tar -xzf /tmp/starship.tar.gz -C /tmp
 install -c -m 0755 /tmp/starship /usr/bin
 # shellcheck disable=SC2016
+echo "alias cat='bat --paging=never --style=plain'" >> /etc/bashrc
+echo 'alias ls="lsd --date=relative --group-dirs=first --size=short"' >> /etc/bashrc
 echo 'eval "$(starship init bash)"' >> /etc/bashrc
+echo 'eval "$(zoxide init --cmd cd bash)"' >> /etc/bashrc
+
+# Install Zellij Terminal Multiplexer
+PACKAGE="zellij-x86_64-unknown-linux-musl.tar.gz"
+DOWNLOAD_URL=$(curl --retry 3 https://api.github.com/repos/zellij-org/zellij/releases | jq --arg pkg "$PACKAGE" -r '.[0].assets[] | select(.name==$pkg) | .browser_download_url')
+curl --retry 3 -Lo /tmp/$PACKAGE "$DOWNLOAD_URL"
+mkdir -p /tmp/zellij
+tar --no-same-owner --no-same-permissions --no-overwrite-dir -xvzf /tmp/$PACKAGE -C /tmp/zellij
+mv /tmp/zellij/zellij /usr/bin/
+rm -rf /tmp/zellij*
 
 # Register Fonts
 fc-cache -f /usr/share/fonts/ubuntu
