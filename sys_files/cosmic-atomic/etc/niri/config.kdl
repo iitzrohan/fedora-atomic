@@ -395,7 +395,7 @@ binds {
     // Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     // Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
-    Mod+T { spawn "ptyxis" "-s"; }
+    Mod+T { spawn "cosmic-term"; }
     Mod+D { spawn "cosmic-launcher"; }
     Mod+Shift+D { spawn "cosmic-app-library"; }
     Mod+Alt+L { spawn "cosmic-greeter"; }
