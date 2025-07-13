@@ -171,7 +171,11 @@
                 "ffmpegthumbnailer",
                 "plasma-discover-rpm-ostree"
             ],
-            "cosmic": []
+            "cosmic": [
+                "cosmic-edit",
+                "cosmic-player",
+                "cosmic-store"
+            ]
         }
     },
     "42": {
