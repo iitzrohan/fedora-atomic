@@ -2,24 +2,24 @@ images:
   - name: akmods-42
     image: ghcr.io/ublue-os/akmods
     tag: main-42
-    digest: sha256:0f0136e9a3e8be3bf98e53cd13fb70eeab42a9bee7808b7f699a0f3d1bbaff62
+    digest: sha256:f50fb437741505d7b439f21cc8c120a0efb9613407a485b7f1967d62180fc346
   - name: akmods-nvidia-open-42
     image: ghcr.io/ublue-os/akmods-nvidia-open
     tag: main-42
-    digest: sha256:85efa96be510f48bc8241ac308ef1054c8e8bf4c1e93c0ede05d3439480d893f
+    digest: sha256:1af253078200b22e52df4937d3ab7314b6d7672f4914a1c8c50887a1c161a177
   - name: base-atomic-42
     image: quay.io/fedora-ostree-desktops/base-atomic
     tag: 42
-    digest: sha256:0b1b9e9009db3e55abdbd794b07cec428aa3f99abe9cb414ce8d0326bd07d2c6
+    digest: sha256:95288b5caffd8126aabdd339b35db74f66274bac355ae9f3e302578b7da70373
   - name: silverblue-42
     image: quay.io/fedora-ostree-desktops/silverblue
     tag: 42
-    digest: sha256:6a3615ae6855f26cc9e8b152d607978d030d70b629904946cb96e2126df8ab47
+    digest: sha256:ddee364264f5c9f1eecfc7991049d4dd298cb5df9e9fb03d149a0c48a026dc40
   - name: kinoite-42
     image: quay.io/fedora-ostree-desktops/kinoite
     tag: 42
-    digest: sha256:563d04523028ae3790c9f193d7116c0a08d0e3cdf8834c0dd4d03d571db3edec
+    digest: sha256:0bbd2e62b7584930fc6c9283dbf5773bb923f7a0d3fb56f2bcbdda73c63e5c15
   - name: cosmic-atomic-42
     image: quay.io/fedora-ostree-desktops/cosmic-atomic
     tag: 42
-    digest: sha256:baad2d4eab1360648787b2ca85c9b501f456f318f12722c9615e9635f5935f54
+    digest: sha256:d8225785be70382693af124439a658253983ff6d68e552174a0222dcd264cbdf
